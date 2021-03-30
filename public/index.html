@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.2.0/p5.js"></script>
+
+        <meta charset="UTF-8">
+        <title> Jeu de Dames </title>
+        <style>
+
+            .myDiv{width: 50%;
+                position: absolute;
+                z-index: 1;
+                right: 0;
+                top: 0;
+                overflow-x: hidden;
+                color: black;
+                font-family: "Droid Sans Mono Dotted"}
+
+            .myDiv2{font-size: 18px;
+                width: 50%;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                bottom: 50px;
+                overflow-x: hidden;
+                color: black;
+                font-family: "Droid Sans Mono Dotted"}
+
+            .ButtonRest{
+                position: fixed;
+                left: 0;
+                bottom: 100px;
+                overflow-x: hidden;
+                color: black;
+                font-family: "Droid Sans Mono Dotted"}
+
+            .gameDiv{position: absolute; top: 0; right: 0}
+
+            body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+            #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px);
+                width: 50%;
+                overflow-x: hidden;
+                z-index: 1;
+            }
+
+            #userNameInput { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px);
+                width: 20%;
+                overflow-x: hidden;
+                z-index: 1;
+            }
+
+
+
+
+            #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+            #userInput { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+
+            #input:focus { outline: none; }
+            #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #ffffff; }
+
+            #messages { list-style-type: none; margin: 0; padding: 0;
+                height: 75%;
+                width: 50%;
+                position: fixed;
+                top: 100px  ;
+                right: 0;
+                right: 0;
+                overflow-x: hidden;}
+            #messages > li { padding: 0.5rem 1rem;}
+            #messages > li:nth-child(odd) { background: #efefef;}
+
+
+        </style>
+
+        </head>
+
+
+
+
+    <body>
+
+
+    <h1>  Super Jeu de la Dame </h1>
+
+    <div class="myDiv">
+         <h1> Super application de chat virtuel</h1>
+    </div>
+
+    <script src ="/socket.io/socket.io.js"></script>
+
+    <div class="gameDiv">
+
+        <script src="JeuDame.js" ></script>
+
+    </div >
+
+    <div class="myDiv2">
+        Nom d'utilisateur : <span id = "UserName"></span> <br>
+    </div>
+
+    <div>
+
+    <ul id="messages"></ul>
+        <form id="form" action="">
+            <input id="input" autocomplete="off" /><button>Send</button>
+        </form>
+
+    </div>
+
+
+    <div>
+
+        <form id="userNameInput" action="">
+            <input id="userInput" autocomplete="off" /><button>Save</button>
+        </form>
+
+    </div>
+
+    <div class="ButtonRest">
+
+        <button type="button" onclick = "resetBoard()"> Relancer la partie </button>
+
+    </div>
+
+    <script>
+        // Affichage des messages
+        let form = document.getElementById('form');
+        let input = document.getElementById('input');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat message', input.value);
+                input.value = '';
+            }
+        });
+
+
+        // Changement du Username
+        let userNameInput = document.getElementById('userNameInput');
+        let userInput = document.getElementById('userInput');
+
+        userNameInput.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (userInput.value) {
+                socket.emit('UserNameChanged', userInput.value);
+                document.getElementById('UserName').textContent = userInput.value;
+            }
+        });
+
+
+    </script>
+
+    </body>
+</html>
